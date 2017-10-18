@@ -61,7 +61,7 @@ int main() {
 	int inputA = 0, inputB = 0, inputC = 0, inputD = 0;
 	int inputRadius = 5;
 	
-	Point p = Point(inputA, inputB, inputC, inputD);;
+	Point p = Point(inputA, inputB, inputC, inputD);
 	Circle c = Circle(p, inputRadius);
 	
 	c.center.movePoint(rand() % 10, rand() % 10);
