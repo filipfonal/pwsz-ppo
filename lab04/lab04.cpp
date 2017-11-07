@@ -1,3 +1,6 @@
+/*
+    autor: Filip Fonał 37919
+ */ 
 #include <iostream>
 #include <cstdlib>
 #include <string>
@@ -60,15 +63,21 @@ class Student {
 };
 
 bool checkYear(string x){
-    if(stoi(x)>=1 && stoi(x)<=5){
-        return true;
-    }else{
-        return false;
-    }
+    if(x.length()>1){
+        if(stoi(x)>=1 && stoi(x)<=5){
+            return true;
+        }else{
+            return false;
+        }
+    }else return true;    
 }
 
 bool checkPesel(string x){
-    if(x.length() == 11){
+    char monthLetter = x[2];
+    char dayLetter = x[4];
+    int month = monthLetter - '0';
+    int day = dayLetter - '0';
+    if(x.length() == 11 && month<=1 && day<=3){
         return true;
     }else{
         return false;
@@ -76,7 +85,8 @@ bool checkPesel(string x){
 }
 
 string showAsRoman(string x){
-    switch(stoi(x)){
+    if(x.length()>=1){
+        switch(stoi(x)){
         case 1:
             return "I";
             break;
@@ -94,7 +104,8 @@ string showAsRoman(string x){
             break;
         default:
             break;
-    }
+        }
+    }else return "";
 }
 
 
@@ -126,11 +137,12 @@ void add(vector<Student> &arr){
     student.setIndex(indeks);
     
     cout << "Podaj rok studiów: " << endl;
-    cin >> rok;
+    cin.ignore();
+    getline(cin,rok);
     student.setRok(rok);
     
     cout << "Podaj adres zamieszkania: " << endl;
-    cin >> adres;
+    getline(cin,adres);
     student.setAdres(adres);
     
     if(!checkYear(rok)){
