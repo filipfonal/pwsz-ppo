@@ -1,21 +1,22 @@
+/*
+    autor: Filip Fonał 37919
+ */ 
 #include <iostream>
 #include <cstdlib>
 #include <string>
+#include <cstring>
 #include <sstream>
 #include <vector>
-#include <time.h>
 
 using namespace std;
-
-#define STUDENTS_COUNT 10
 
 class Student {
 	public:
 		string imie;
 		string nazwisko;
-		long pesel;
-		int indeks;
-		int rok;
+		string pesel;
+		string indeks;
+		string rok;
 		string adres;
 		
 		void setImie(string imie ){
@@ -24,13 +25,13 @@ class Student {
 		void setNazwisko(string nazwisko) {
 			this->nazwisko = nazwisko;
 		}
-		void setPesel(long pesel) {
+		void setPesel(string pesel) {
 			this->pesel = pesel;
 		}
-		void setIndex(int indeks) {
+		void setIndex(string indeks) {
 			this->indeks = indeks;
 		}
-		void setRok(int rok) {
+		void setRok(string rok) {
 			this->rok = rok;
 		}
 		void setAdres(string adres) {
@@ -46,11 +47,14 @@ class Student {
 		string getNazwisko() {
 			return this->nazwisko;
 		}
-		long getPesel() {
+		string getPesel() {
 			return this->pesel;
 		}
-		int getRok() {
+		string getRok() {
 			return this->rok;
+		}
+                string getIndex() {
+			return this->indeks;
 		}
 		string getAdres() {
 			return this->adres;
@@ -58,60 +62,145 @@ class Student {
 		
 };
 
-string getRandomStudentNumber() {
-	ostringstream ss;
-	int randomNumber = rand() % 2000 + 37000;
-	
-	ss << randomNumber;
-	
-	return ss.str();
+bool checkYear(string x){
+    if(x.length()>1){
+        if(stoi(x)>=1 && stoi(x)<=5){
+            return true;
+        }else{
+            return false;
+        }
+    }else return true;    
 }
 
-int getRandomStatus() {
-	
-	int randomNumber = rand() % 2;
-	
-	return randomNumber;
+bool checkPesel(string x){
+    char monthLetter = x[2];
+    char dayLetter = x[4];
+    int month = monthLetter - '0';
+    int day = dayLetter - '0';
+    if(x.length() == 11 && month<=1 && day<=3){
+        return true;
+    }else{
+        return false;
+    }
 }
 
-string getRandomStudentName(){
-	string list[4] = {"Imie1", "Imie2", "Imie3", "Imie4"};
-	return list[rand()%4];
+string showAsRoman(string x){
+    if(x.length()>=1){
+        switch(stoi(x)){
+        case 1:
+            return "I";
+            break;
+        case 2:
+            return "II";
+            break;
+        case 3:
+            return "III";
+            break;
+        case 4:
+            return "IV";
+            break;
+        case 5:
+            return "V";
+            break;
+        default:
+            break;
+        }
+    }else return "";
 }
 
-string getRandomStudentLastName(){
-	string list[4] = {"Nazwisko1", "Nazwisko2", "Nazwisko3", "Nazwisko4"};
-	return list[rand()%4];
+
+
+void add(vector<Student> &arr){
+    string imie;
+    string nazwisko;
+    string pesel;
+    string indeks;
+    string rok;
+    string adres;
+    Student student;
+    
+    cout << "DODAWANIE STUDENTA" << endl;
+    cout << "Podaj imię: " << endl;
+    cin >> imie;
+    student.setImie(imie);
+    
+    cout << "Podaj nazwisko: " << endl;
+    cin >> nazwisko;
+    student.setNazwisko(nazwisko);
+    
+    cout << "Podaj pesel: " << endl;
+    cin >> pesel;
+    student.setPesel(pesel);
+    
+    cout << "Podaj numer indeksu: " << endl;
+    cin >> indeks;
+    student.setIndex(indeks);
+    
+    cout << "Podaj rok studiów: " << endl;
+    cin.ignore();
+    getline(cin,rok);
+    student.setRok(rok);
+    
+    cout << "Podaj adres zamieszkania: " << endl;
+    getline(cin,adres);
+    student.setAdres(adres);
+    
+    if(!checkYear(rok)){
+        cout << "Nie dodano studenta! Podano błedny rok studiów" << endl;
+    }else if(!checkPesel(pesel)){
+        cout << "Nie dodano studenta! Podano błedny pesel" << endl;
+    }else{
+        arr.push_back(student);
+        cout << "Dodano studenta!" << endl;
+    }
+    
+    
 }
+
+void show(vector<Student> &arr){
+    cout << "LISTA STUDENTÓW" << endl;
+    for(int i=0; i<arr.size(); i++){
+        cout << i+1 << ". ";
+        Student student = arr.at(i);
+        cout << student.getImie() << " ";
+        cout << student.getNazwisko() << " ";
+        cout << student.getPesel() << " ";
+        cout << student.getIndex() << " ";
+        cout << showAsRoman(student.getRok()) << " ";
+        cout << student.getAdres() << endl;
+    }
+}
+
+void menu(int &c, vector<Student> &s){
+    cout << "wybierz: [1] pokaż listę studentów , [2] dodaj studenta , [3] wyjdź z programu" << endl;
+    cin >> c;
+    
+    switch (c){
+                case 1:
+                    show(s);
+                    break;
+                case 2:
+                    add(s);
+                    break;
+                case 3:
+                    cout << "Kończę program" << endl;
+                    break;
+                default:
+                    cout << "Nieznany wybór" << endl;
+                    break;
+                      
+            }
+}
+
 
 int main() {
-	srand(time(NULL));
+    
 	vector<Student> students;
-	
-	for(int i = 0; i < STUDENTS_COUNT; i++) {
-		Student student;
-		
-		student.setStudentNo(getRandomStudentNumber());
-		student.setFname(getRandomStudentName());
-		student.setLname(getRandomStudentLastName());
-		student.setStatus(getRandomStatus());
-		
-		students.push_back(student);
-	}
-	
-	cout  << "Students group have been filled." << endl << endl;
-	
-	
-	for(int i = 0; i < students.size(); i++) {
-		Student student = students.at(i);
-		
-		if(student.status==1){
-		
-		cout << student.getLname() << " ";
-		cout << student.getFname() << " ";
-		cout << "(" << student.getStudentNo() << ")" << endl;
-		}
-	}
-	
+	int choice;
+        
+        while(choice!=3){
+            menu(choice, students);
+        }
+        
 	return 0;
 }
