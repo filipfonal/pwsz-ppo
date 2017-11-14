@@ -11,104 +11,84 @@
 using namespace std;
 
 class Student {
-	public:
-		string imie;
-		string nazwisko;
-		string pesel;
-		string indeks;
-		string rok;
-		string adres;
-		
-		void setImie(string imie ){
-			this->imie = imie;
-		}
-		void setNazwisko(string nazwisko) {
-			this->nazwisko = nazwisko;
-		}
-		void setPesel(string pesel) {
-			this->pesel = pesel;
-		}
-		void setIndex(string indeks) {
-			this->indeks = indeks;
-		}
-		void setRok(string rok) {
-			this->rok = rok;
-		}
-		void setAdres(string adres) {
-			this->adres = adres;
-		}
-		
-		
-		
-		
-		string getImie() {
-			return this->imie;
-		}
-		string getNazwisko() {
-			return this->nazwisko;
-		}
-		string getPesel() {
-			return this->pesel;
-		}
-		string getRok() {
-			return this->rok;
-		}
-                string getIndex() {
-			return this->indeks;
-		}
-		string getAdres() {
-			return this->adres;
-		}
-		
+    private:
+            string imie;
+            string nazwisko;
+            string pesel;
+            string indeks;
+            string rok;
+            string adres;
+
+            string showAsRoman(string x){
+                if(x.length()>=1){
+                    switch(stoi(x)){
+                    case 1:
+                        return "I";
+                        break;
+                    case 2:
+                        return "II";
+                        break;
+                    case 3:
+                        return "III";
+                        break;
+                    case 4:
+                        return "IV";
+                        break;
+                    case 5:
+                        return "V";
+                        break;
+                    default:
+                        break;
+                    }
+                }else return "";
+            }
+                
+        public:
+        
+            Student(string imie, string nazwisko, string pesel, string indeks){
+                this->imie = imie;
+                this->nazwisko = nazwisko;
+                this->pesel = pesel;
+                this->indeks = indeks;
+            }
+
+            void setYear(string rok) {
+                    this->rok = rok;
+            }
+
+            void setAdress(string adres) {
+                    this->adres = adres;
+            }
+
+            string getData(){
+                return imie + " " + nazwisko + " " + pesel + " " +indeks+" "+showAsRoman(rok)+" "+adres;
+            }
+
+            bool checkYear(string x){
+                if(x.length()>1){
+                    if(stoi(x)>=1 && stoi(x)<=5){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }else return true;    
+            }
+
+            bool checkPesel(string x){
+                char monthLetter = x[2];
+                char dayLetter = x[4];
+                int month = monthLetter - '0';
+                int day = dayLetter - '0';
+                if(x.length() == 11 && month<=1 && day<=3){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+                
+                
+        
 };
-
-bool checkYear(string x){
-    if(x.length()>1){
-        if(stoi(x)>=1 && stoi(x)<=5){
-            return true;
-        }else{
-            return false;
-        }
-    }else return true;    
-}
-
-bool checkPesel(string x){
-    char monthLetter = x[2];
-    char dayLetter = x[4];
-    int month = monthLetter - '0';
-    int day = dayLetter - '0';
-    if(x.length() == 11 && month<=1 && day<=3){
-        return true;
-    }else{
-        return false;
-    }
-}
-
-string showAsRoman(string x){
-    if(x.length()>=1){
-        switch(stoi(x)){
-        case 1:
-            return "I";
-            break;
-        case 2:
-            return "II";
-            break;
-        case 3:
-            return "III";
-            break;
-        case 4:
-            return "IV";
-            break;
-        case 5:
-            return "V";
-            break;
-        default:
-            break;
-        }
-    }else return "";
-}
-
-
 
 void add(vector<Student> &arr){
     string imie;
@@ -117,37 +97,29 @@ void add(vector<Student> &arr){
     string indeks;
     string rok;
     string adres;
-    Student student;
     
     cout << "DODAWANIE STUDENTA" << endl;
     cout << "Podaj imię: " << endl;
     cin >> imie;
-    student.setImie(imie);
-    
     cout << "Podaj nazwisko: " << endl;
     cin >> nazwisko;
-    student.setNazwisko(nazwisko);
-    
     cout << "Podaj pesel: " << endl;
     cin >> pesel;
-    student.setPesel(pesel);
-    
     cout << "Podaj numer indeksu: " << endl;
     cin >> indeks;
-    student.setIndex(indeks);
-    
     cout << "Podaj rok studiów: " << endl;
     cin.ignore();
     getline(cin,rok);
-    student.setRok(rok);
-    
     cout << "Podaj adres zamieszkania: " << endl;
     getline(cin,adres);
-    student.setAdres(adres);
     
-    if(!checkYear(rok)){
+    Student student(imie, nazwisko, pesel, indeks);
+    student.setYear(rok);
+    student.setAdress(adres);
+    
+    if(!student.checkYear(rok)){
         cout << "Nie dodano studenta! Podano błedny rok studiów" << endl;
-    }else if(!checkPesel(pesel)){
+    }else if(!student.checkPesel(pesel)){
         cout << "Nie dodano studenta! Podano błedny pesel" << endl;
     }else{
         arr.push_back(student);
@@ -162,12 +134,7 @@ void show(vector<Student> &arr){
     for(int i=0; i<arr.size(); i++){
         cout << i+1 << ". ";
         Student student = arr.at(i);
-        cout << student.getImie() << " ";
-        cout << student.getNazwisko() << " ";
-        cout << student.getPesel() << " ";
-        cout << student.getIndex() << " ";
-        cout << showAsRoman(student.getRok()) << " ";
-        cout << student.getAdres() << endl;
+        cout << student.getData() << endl;
     }
 }
 
@@ -192,15 +159,14 @@ void menu(int &c, vector<Student> &s){
             }
 }
 
-
 int main() {
     
-	vector<Student> students;
-	int choice;
+    vector<Student> students;
+    int choice;
         
         while(choice!=3){
             menu(choice, students);
         }
         
-	return 0;
+    return 0;
 }
