@@ -4,29 +4,28 @@ namespace Scheduler\Models;
 
 use Scheduler\Interfaces\ItemClassInterface;
 
-abstract class SemesterClass implements ItemClassInterface {
+abstract
+class SemesterClass implements ItemClassInterface {
 
 	private $name;
 	private $teacher;
 	private $room;
-	private $building;
 
 	public function __construct(string $name, string $teacher, string $room) {
-		$this->name = $name;
+		$this->name    = $name;
 		$this->teacher = $teacher;
-		$this->room = $room;
-		$this->building = $building;
+		$this->room    = $room;
 	}
 
-	public function getName(): string {
+	public function getName():string {
 		return $this->name;
 	}
 
-	public function getTeacher(): string {
+	public function getTeacher():string {
 		return $this->teacher;
 	}
 
-	public function getRoom(): string {
+	public function getRoom():string {
 		return $this->room;
 	}
 
