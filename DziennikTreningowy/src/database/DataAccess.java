@@ -1,9 +1,6 @@
 package database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,32 +21,21 @@ public class DataAccess {
         }
     }
 
-    public List<String> getData(){
+    public ResultSet executeQuery(String query){
         try {
-            List<String> imiona = new ArrayList<String>();
-
-            String query = "select * from imiona";
             rs = st.executeQuery(query);
-            System.out.println("Records from database");
-            while(rs.next()){
-                String name = rs.getString("imie");
-                imiona.add(name);
-            }
-            return imiona;
-
+            return rs;
         }catch (Exception e){
             System.out.println(e);
         }
         return null;
     }
 
-    public void setData(String imie){
+    public void executeUpdate(String update){
         try {
-            st.executeUpdate("INSERT INTO imiona " + "VALUES ('" +imie+ "')");
+            st.executeUpdate(update);
         }catch (Exception e){
             System.out.println(e);
         }
     }
-
-
 }
