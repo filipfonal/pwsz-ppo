@@ -2,6 +2,8 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -24,8 +26,6 @@ public class AppWindow extends JPanel {
         super();
 
         //Buttons properties
-        Color active = new Color(31,58,147);
-        Color disable = new Color(28,53,134);
         ArrayList<JButton> buttons = new ArrayList();
         buttons.add(addButton);
         buttons.add(listButton);
@@ -35,45 +35,31 @@ public class AppWindow extends JPanel {
 
         //Create listeners
         addButton.addActionListener(e->{
-            buttons.stream().forEach(b->b.setBackground(disable));
-            addButton.setBackground(active);
-            dataPanel.removeAll();
-            dataPanel.repaint();
-            dataPanel.revalidate();
-            dataPanel.add(addPanel);
-            dataPanel.repaint();
-            dataPanel.revalidate();
+            getListener(buttons,addButton,addPanel);
         });
         listButton.addActionListener(e->{
-            buttons.stream().forEach(b->b.setBackground(disable));
-            listButton.setBackground(active);
-            dataPanel.removeAll();
-            dataPanel.repaint();
-            dataPanel.revalidate();
-            dataPanel.add(listPanel);
-            dataPanel.repaint();
-            dataPanel.revalidate();
+            getListener(buttons,listButton,listPanel);
         });
         summaryButton.addActionListener(e->{
-            buttons.stream().forEach(b->b.setBackground(disable));
-            summaryButton.setBackground(active);
-            dataPanel.removeAll();
-            dataPanel.repaint();
-            dataPanel.revalidate();
-            dataPanel.add(summaryPanel);
-            dataPanel.repaint();
-            dataPanel.revalidate();
+            getListener(buttons,summaryButton,summaryPanel);
         });
         userButton.addActionListener(e->{
-            buttons.stream().forEach(b->b.setBackground(disable));
-            userButton.setBackground(active);
-            dataPanel.removeAll();
-            dataPanel.repaint();
-            dataPanel.revalidate();
-            dataPanel.add(userPanel);
-            dataPanel.repaint();
-            dataPanel.revalidate();
+            getListener(buttons,userButton,userPanel);
         });
+
+    }
+
+    private void getListener(ArrayList<JButton> buttons, JButton button, JPanel panel){
+        Color active = new Color(31,58,147);
+        Color disable = new Color(28,53,134);
+        buttons.stream().forEach(b->b.setBackground(disable));
+        button.setBackground(active);
+        dataPanel.removeAll();
+        dataPanel.repaint();
+        dataPanel.revalidate();
+        dataPanel.add(panel);
+        dataPanel.repaint();
+        dataPanel.revalidate();
     }
 
     private void createUIComponents() { }
