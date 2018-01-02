@@ -1,5 +1,6 @@
 package main;
 
+import components.Gym;
 import components.IActivity;
 import components.Running;
 import database.DataAccess;
@@ -24,14 +25,14 @@ public class Main {
         frame.setMinimumSize(new Dimension(900, 600));
         frame.setVisible(true);
 
-        List<IActivity> trainigs = resp.getAll(Running.class);
+        /*List<IActivity> trainigs = resp.getAll(Running.class);
 
         if (trainigs.size()>0){
             System.out.println(trainigs.get(0).getId());
             System.out.println(trainigs.get(0).getDescription());
         }else{
             System.out.println("Brak rekordow");
-        }
+        }*/
 
     }
 }

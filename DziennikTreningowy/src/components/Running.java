@@ -19,6 +19,7 @@ public class Running implements IActivity {
     @DBField
     private String time;
 
+    //Interface methods
     @DBField
     public void setId(int id){
         this.id = id;
@@ -32,27 +33,18 @@ public class Running implements IActivity {
         this.title = title;
     }
     @DBField
-    public void setDescription(float calories){
-        this.calories = calories;
+    public void setDescription(String description){
+        this.description = description;
     }
     @DBField
     public void setDate(String date){
         this.date = date;
     }
     @DBField
-    public void setCalories(String description){
-        this.description = description;
-    }
-    @DBField
-    public void setDistance(float distance){
-        this.distance = distance;
-    }
-    @DBField
-    public void setTime(String time){
-        this.time = time;
+    public void setCalories(float calories){
+        this.calories = calories;
     }
 
-    //Interface methods
     public int getId(){ return id; }
     public String getType(){ return type; }
     public String getTitle(){ return title; }
@@ -61,6 +53,14 @@ public class Running implements IActivity {
     public float getCalories(){ return  calories; }
 
     //Additional methods for this class
+    @DBField
+    public void setDistance(float distance){
+        this.distance = distance;
+    }
+    @DBField
+    public void setTime(String time){
+        this.time = time;
+    }
     public float getDistance(){
         return distance;
     }

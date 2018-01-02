@@ -1,6 +1,7 @@
 package components;
 
 public class Gym implements IActivity {
+
     @DBField
     private int id = 0;
     @DBField
@@ -14,6 +15,7 @@ public class Gym implements IActivity {
     @DBField
     private float calories;
 
+    //Interface methods
     @DBField
     public void setId(int id){
         this.id = id;
@@ -27,19 +29,18 @@ public class Gym implements IActivity {
         this.title = title;
     }
     @DBField
-    public void setDescription(float calories){
-        this.calories = calories;
+    public void setDescription(String description){
+        this.description = description;
     }
     @DBField
     public void setDate(String date){
         this.date = date;
     }
     @DBField
-    public void setCalories(String description){
-        this.description = description;
+    public void setCalories(float calories){
+        this.calories = calories;
     }
 
-    //Interface methods
     public int getId(){ return id; }
     public String getType(){ return type; }
     public String getTitle(){ return title; }
