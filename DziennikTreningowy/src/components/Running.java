@@ -13,12 +13,15 @@ public class Running implements IActivity {
     @DBField
     private String date;
     @DBField
-    private float calories;
+    private int calories;
     @DBField
     private float distance;
     @DBField
     private String time;
+    @DBField
+    private int pulse;
 
+    //Interface methods
     @DBField
     public void setId(int id){
         this.id = id;
@@ -32,17 +35,26 @@ public class Running implements IActivity {
         this.title = title;
     }
     @DBField
-    public void setDescription(float calories){
-        this.calories = calories;
+    public void setDescription(String description){
+        this.description = description;
     }
     @DBField
     public void setDate(String date){
         this.date = date;
     }
     @DBField
-    public void setCalories(String description){
-        this.description = description;
+    public void setCalories(int calories){
+        this.calories = calories;
     }
+
+    public int getId(){ return id; }
+    public String getType(){ return type; }
+    public String getTitle(){ return title; }
+    public String getDescription(){ return description; }
+    public String getDate(){ return date; }
+    public int getCalories(){ return  calories; }
+
+    //Additional methods for this class
     @DBField
     public void setDistance(float distance){
         this.distance = distance;
@@ -51,21 +63,18 @@ public class Running implements IActivity {
     public void setTime(String time){
         this.time = time;
     }
-
-    //Interface methods
-    public int getId(){ return id; }
-    public String getType(){ return type; }
-    public String getTitle(){ return title; }
-    public String getDescription(){ return description; }
-    public String getDate(){ return date; }
-    public float getCalories(){ return  calories; }
-
-    //Additional methods for this class
+    @DBField
+    public void setPulse(int pulse){
+        this.pulse = pulse;
+    }
     public float getDistance(){
         return distance;
     }
     public String getTime(){
         return time;
+    }
+    public int getPulse(){
+        return pulse;
     }
 
 }

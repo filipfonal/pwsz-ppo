@@ -9,9 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Repository<T extends IActivity> {
@@ -22,6 +20,7 @@ public class Repository<T extends IActivity> {
         String query;
         AtomicInteger id = new AtomicInteger();
         StringBuilder names = new StringBuilder();
+        StringBuilder namesWithTypes = new StringBuilder();
         StringBuilder values = new StringBuilder();
         StringBuilder updates = new StringBuilder();
         Field[] fields = activity.getClass().getDeclaredFields();
@@ -31,6 +30,7 @@ public class Repository<T extends IActivity> {
                 e.setAccessible(true);
                 if(!e.getName().equals("id")){
                     names.append(e.getName() + ",");
+                    namesWithTypes.append(e.getName() +" "+ getSQLType(e.getType().getSimpleName()) + ",");
                     values.append("'" + e.get(activity) + "',");
                     updates.append(e.getName() + "='" + e.get(activity) +"',");
                 }else{
@@ -42,18 +42,23 @@ public class Repository<T extends IActivity> {
         });
 
         //Building sql query
-        String className = activity.getClass().getSimpleName().toLowerCase();
-        String column = names.substring(0, names.length()-1).toLowerCase();
-        String value = values.substring(0, values.length()-1);
-        String update = updates.substring(0, updates.length()-1);
+        String activitySub = activity.getClass().getSimpleName().toLowerCase();
+        String namesSub = names.substring(0, names.length()-1).toLowerCase();
+        String valuesSub = values.substring(0, values.length()-1);
+        String updatesSub = updates.substring(0, updates.length()-1);
+        String namesWithTypesSub = namesWithTypes.substring(0, namesWithTypes.length()-1);
+        //Check if table exists/create table
+        if(!Main.connect.checkExists(activitySub)){
+            String sql = "CREATE TABLE "+ activitySub +" (id INT PRIMARY KEY AUTO_INCREMENT,"+ namesWithTypesSub +");";
+            Main.connect.executeUpdate(sql);
+        }
+        //Check if record exists/create or update record
         if(id.get() == 0) {
-            query = "INSERT INTO " + className + " (" + column + ") VALUES (" + value + ");";
+            query = "INSERT INTO " + activitySub + " (" + namesSub + ") VALUES (" + valuesSub + ");";
         }else{
-            query = "UPDATE " + className + " SET " + update + " WHERE id='"+ id.get() +"';";
+            query = "UPDATE " + activitySub + " SET " + updatesSub + " WHERE id='"+ id.get() +"';";
         }
         Main.connect.executeUpdate(query);
-        System.out.println(query);
-        System.out.println(id.get());
     }
 
     public void Remove(T activity){
@@ -76,7 +81,6 @@ public class Repository<T extends IActivity> {
         query = "DELETE FROM " + className + " WHERE id='"+ id.get() +"';";
 
         Main.connect.executeUpdate(query);
-        System.out.println(query);
     }
 
     public List<IActivity> getAll(Class<T> training){
@@ -86,27 +90,30 @@ public class Repository<T extends IActivity> {
         String query = "SELECT * FROM " + className + ";";
         Field[] fields = training.getDeclaredFields();
         Method[] methods = training.getDeclaredMethods();
+        Map<String, Object> setters = new HashMap<>();
+       // List setters = new ArrayList();
 
         Arrays.stream(fields).filter(e->e.isAnnotationPresent(DBField.class)).forEach(e->{
             e.setAccessible(true);
             columns.add(e.getName());
         });
 
+        if(!Main.connect.checkExists(className)){
+            return trainigs;
+        }
         ResultSet result = Main.connect.executeQuery(query);
-        List setters = new ArrayList();
 
         try {
             while (result.next()){
                 T obj = training.newInstance();
                 for (int i=0;i<columns.size();i++){
                     Object r = result.getObject(columns.get(i));
-                    setters.add(r);
+                    setters.put(columns.get(i),r);
                 }
                 Arrays.stream(methods).filter(e->e.isAnnotationPresent(DBField.class)).forEach(e->{
-                    int count = 0;
                     try {
-                        e.invoke(obj,setters.get(count));
-                        count++;
+                        System.out.println(e.getName().substring(3).toLowerCase());
+                        e.invoke(obj,setters.get(e.getName().substring(3).toLowerCase()));
                     } catch (IllegalAccessException|InvocationTargetException e1) {
                         e1.printStackTrace();
                     }
@@ -119,4 +126,17 @@ public class Repository<T extends IActivity> {
 
         return trainigs;
     }
+
+    private String getSQLType(String typeName){
+        if(typeName.equals("String"))
+            return "VARCHAR(255)";
+        if(typeName.equals("int"))
+            return "INTEGER";
+        if(typeName.equals("float"))
+            return "FLOAT";
+
+        return null;
+    }
+
+
 }

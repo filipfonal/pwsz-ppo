@@ -1,6 +1,7 @@
 package components;
 
 public class Gym implements IActivity {
+
     @DBField
     private int id = 0;
     @DBField
@@ -12,8 +13,16 @@ public class Gym implements IActivity {
     @DBField
     private String date;
     @DBField
-    private float calories;
+    private int calories;
+    @DBField
+    private int count;
+    @DBField
+    private int kilograms;
+    @DBField
+    private String time;
 
+
+    //Interface methods
     @DBField
     public void setId(int id){
         this.id = id;
@@ -27,25 +36,45 @@ public class Gym implements IActivity {
         this.title = title;
     }
     @DBField
-    public void setDescription(float calories){
-        this.calories = calories;
+    public void setDescription(String description){
+        this.description = description;
     }
     @DBField
     public void setDate(String date){
         this.date = date;
     }
     @DBField
-    public void setCalories(String description){
-        this.description = description;
+    public void setCalories(int calories){
+        this.calories = calories;
     }
 
-    //Interface methods
     public int getId(){ return id; }
     public String getType(){ return type; }
     public String getTitle(){ return title; }
     public String getDescription(){ return description; }
     public String getDate(){ return date; }
-    public float getCalories(){ return  calories; }
+    public int getCalories(){ return  calories; }
 
     //Additional methods for this class
+    @DBField
+    public void setCount(int count){
+        this.count = count;
+    }
+    @DBField
+    public void setKilograms(int kilograms){
+        this.kilograms = kilograms;
+    }
+    @DBField
+    public void setTime(String time){
+        this.time = time;
+    }
+    public float getCount(){
+        return count;
+    }
+    public int getKilograms(){
+        return kilograms;
+    }
+    public String getTime(){
+        return time;
+    }
 }

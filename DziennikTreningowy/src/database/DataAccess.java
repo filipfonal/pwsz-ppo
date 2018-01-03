@@ -1,8 +1,6 @@
 package database;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DataAccess {
     private Connection con;
@@ -37,5 +35,19 @@ public class DataAccess {
         }catch (Exception e){
             System.out.println(e);
         }
+    }
+
+    public boolean checkExists(String tableName){
+        DatabaseMetaData dbm = null;
+        try {
+            dbm = con.getMetaData();
+            ResultSet tables = dbm.getTables(null, null, tableName, null);
+            if (tables.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
