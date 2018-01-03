@@ -7,12 +7,12 @@ import components.Running;
 import main.Main;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AppWindow extends JPanel {
     public JPanel mainPanel;
@@ -44,6 +44,16 @@ public class AppWindow extends JPanel {
     private JTextField exercisesField;
     private JTextField kilogramsField;
     private JTextField gymTimeField;
+    private JTable trainingsTable;
+    private JButton deleteButton;
+    String[] columnNames = {
+            "Data",
+            "Typ",
+            "Nazwa",
+            "Opis",
+            "Spalone Kalorie",
+            "Akcja"};
+    private DefaultTableModel model = new DefaultTableModel();
 
     public AppWindow() {
         super();
@@ -62,6 +72,15 @@ public class AppWindow extends JPanel {
         });
         listButton.addActionListener(e->{
             getListener(buttons,listButton,listPanel);
+
+            model.setRowCount(0);
+            List<IActivity> trainings = getTrainings();
+            if (trainings != null && !trainings.isEmpty()) {
+                trainings.stream().forEach(e1 -> {
+                    model.addRow(new Object[]{e1.getDate(), e1.getType(), e1.getTitle(), e1.getDescription(), e1.getCalories()});
+                });
+            }
+
         });
         summaryButton.addActionListener(e->{
             getListener(buttons,summaryButton,summaryPanel);
@@ -91,6 +110,23 @@ public class AppWindow extends JPanel {
 
             }
         });
+
+        model.setColumnIdentifiers(columnNames);
+        trainingsTable.setModel(model);
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<IActivity> trainings = getTrainings();
+                Main.resp.Remove(trainings.get(trainingsTable.getSelectedRow()));
+                model.setRowCount(0);
+                List<IActivity> actualTrainings = getTrainings();
+                if (actualTrainings != null && !actualTrainings.isEmpty()) {
+                    actualTrainings.stream().forEach(e1 -> {
+                        model.addRow(new Object[]{e1.getDate(), e1.getType(), e1.getTitle(), e1.getDescription(), e1.getCalories()});
+                    });
+                }
+            }
+        });
     }
 
     private void getListener(ArrayList<JButton> buttons, JButton button, JPanel panel){
@@ -113,15 +149,25 @@ public class AppWindow extends JPanel {
                 running.setTitle(titleField.getText());
                 running.setDescription(descriptionField.getText());
                 running.setDate(dateField.getText());
-                running.setCalories(123);
+                //running.setCalories();
                 Main.resp.Save(running);
 
             }
             if(activityType.getSelectedItem().equals("Rower")){
                 Cycling cycling = new Cycling();
+                cycling.setTitle(titleField.getText());
+                cycling.setDescription(descriptionField.getText());
+                cycling.setDate(dateField.getText());
+                //running.setCalories();
+                Main.resp.Save(cycling);
             }
             if(activityType.getSelectedItem().equals("Siłownia")){
                 Gym gym = new Gym();
+                gym.setTitle(titleField.getText());
+                gym.setDescription(descriptionField.getText());
+                gym.setDate(dateField.getText());
+                //running.setCalories();
+                Main.resp.Save(gym);
             }
 
             JOptionPane.showMessageDialog(new JFrame(), "Trening został zapisany !", "Sukces",
@@ -133,4 +179,24 @@ public class AppWindow extends JPanel {
     }
 
     private void createUIComponents() { }
+
+    private List<IActivity> getTrainings(){
+        List<IActivity> trainigsRunning = Main.resp.getAll(Running.class);
+        List<IActivity> trainigsCycling = Main.resp.getAll(Cycling.class);
+        List<IActivity> trainigsGym = Main.resp.getAll(Gym.class);
+        List<IActivity> trainigs = new ArrayList<>();
+
+        if(trainigsRunning != null && !trainigsRunning.isEmpty())
+            trainigs.addAll(trainigsRunning);
+        if(trainigsCycling != null && !trainigsCycling.isEmpty())
+            trainigs.addAll( trainigsCycling);
+        if(trainigsGym != null && !trainigsGym.isEmpty())
+            trainigs.addAll(trainigsGym);
+
+        if (trainigs.size()>0){
+            return trainigs;
+        }
+
+        return null;
+    }
 }

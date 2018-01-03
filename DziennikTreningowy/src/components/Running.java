@@ -13,11 +13,13 @@ public class Running implements IActivity {
     @DBField
     private String date;
     @DBField
-    private float calories;
+    private int calories;
     @DBField
     private float distance;
     @DBField
     private String time;
+    @DBField
+    private int pulse;
 
     //Interface methods
     @DBField
@@ -41,7 +43,7 @@ public class Running implements IActivity {
         this.date = date;
     }
     @DBField
-    public void setCalories(float calories){
+    public void setCalories(int calories){
         this.calories = calories;
     }
 
@@ -50,7 +52,7 @@ public class Running implements IActivity {
     public String getTitle(){ return title; }
     public String getDescription(){ return description; }
     public String getDate(){ return date; }
-    public float getCalories(){ return  calories; }
+    public int getCalories(){ return  calories; }
 
     //Additional methods for this class
     @DBField
@@ -61,11 +63,18 @@ public class Running implements IActivity {
     public void setTime(String time){
         this.time = time;
     }
+    @DBField
+    public void setPulse(int pulse){
+        this.pulse = pulse;
+    }
     public float getDistance(){
         return distance;
     }
     public String getTime(){
         return time;
+    }
+    public int getPulse(){
+        return pulse;
     }
 
 }

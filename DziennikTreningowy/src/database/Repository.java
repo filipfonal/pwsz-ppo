@@ -9,9 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Repository<T extends IActivity> {
@@ -92,27 +90,30 @@ public class Repository<T extends IActivity> {
         String query = "SELECT * FROM " + className + ";";
         Field[] fields = training.getDeclaredFields();
         Method[] methods = training.getDeclaredMethods();
+        Map<String, Object> setters = new HashMap<>();
+       // List setters = new ArrayList();
 
         Arrays.stream(fields).filter(e->e.isAnnotationPresent(DBField.class)).forEach(e->{
             e.setAccessible(true);
             columns.add(e.getName());
         });
 
+        if(!Main.connect.checkExists(className)){
+            return trainigs;
+        }
         ResultSet result = Main.connect.executeQuery(query);
-        List setters = new ArrayList();
 
         try {
             while (result.next()){
                 T obj = training.newInstance();
                 for (int i=0;i<columns.size();i++){
                     Object r = result.getObject(columns.get(i));
-                    setters.add(r);
+                    setters.put(columns.get(i),r);
                 }
                 Arrays.stream(methods).filter(e->e.isAnnotationPresent(DBField.class)).forEach(e->{
-                    int count = 0;
                     try {
-                        e.invoke(obj,setters.get(count));
-                        count++;
+                        System.out.println(e.getName().substring(3).toLowerCase());
+                        e.invoke(obj,setters.get(e.getName().substring(3).toLowerCase()));
                     } catch (IllegalAccessException|InvocationTargetException e1) {
                         e1.printStackTrace();
                     }

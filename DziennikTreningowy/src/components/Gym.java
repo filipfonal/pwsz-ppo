@@ -13,7 +13,14 @@ public class Gym implements IActivity {
     @DBField
     private String date;
     @DBField
-    private float calories;
+    private int calories;
+    @DBField
+    private int count;
+    @DBField
+    private int kilograms;
+    @DBField
+    private String time;
+
 
     //Interface methods
     @DBField
@@ -37,7 +44,7 @@ public class Gym implements IActivity {
         this.date = date;
     }
     @DBField
-    public void setCalories(float calories){
+    public void setCalories(int calories){
         this.calories = calories;
     }
 
@@ -46,7 +53,28 @@ public class Gym implements IActivity {
     public String getTitle(){ return title; }
     public String getDescription(){ return description; }
     public String getDate(){ return date; }
-    public float getCalories(){ return  calories; }
+    public int getCalories(){ return  calories; }
 
     //Additional methods for this class
+    @DBField
+    public void setCount(int count){
+        this.count = count;
+    }
+    @DBField
+    public void setKilograms(int kilograms){
+        this.kilograms = kilograms;
+    }
+    @DBField
+    public void setTime(String time){
+        this.time = time;
+    }
+    public float getCount(){
+        return count;
+    }
+    public int getKilograms(){
+        return kilograms;
+    }
+    public String getTime(){
+        return time;
+    }
 }
