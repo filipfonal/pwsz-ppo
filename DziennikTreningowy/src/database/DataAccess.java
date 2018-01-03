@@ -1,5 +1,6 @@
 package database;
 
+import javax.swing.*;
 import java.sql.*;
 
 public class DataAccess {
@@ -11,11 +12,13 @@ public class DataAccess {
         try {
             Class.forName("com.mysql.jdbc.Driver");
 
-            con = DriverManager.getConnection("jdbc:mysql://localhost:8889/ppo", "filip", "53EOZSjGBrSQ1Zmk");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ppo", "filip", "c94tt9C94gVlCfQl");
             st = con.createStatement();
 
         }catch (Exception e){
             System.out.println(e);
+            JOptionPane.showMessageDialog(new JFrame(), "Brak połącznia z bazą !", "Błąd",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
