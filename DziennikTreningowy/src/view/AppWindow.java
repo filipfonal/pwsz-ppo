@@ -11,7 +11,10 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.List;
 
 public class AppWindow extends JPanel {
@@ -33,19 +36,24 @@ public class AppWindow extends JPanel {
     private JPanel addPanel;
     private JTextArea descriptionField;
     private JComboBox activityType;
-    private JTextField distanceField;
-    private JTextField runningTimeField;
     private JButton runningButton;
     private JButton gymButton;
     private JButton cyclingButton;
     private JPanel cyclingPanel;
     private JPanel gymPanel;
     private JLabel caloriesField;
-    private JTextField exercisesField;
-    private JTextField kilogramsField;
-    private JTextField gymTimeField;
     private JTable trainingsTable;
     private JButton deleteButton;
+    private JSpinner runningTimeField;
+    private JSpinner cyclingTimeField;
+    private JSpinner gymTimeField;
+    private JButton detailsButton;
+    private JSpinner pulseField;
+    private JSpinner cyclingDistanceField;
+    private JSpinner cadenceField;
+    private JSpinner excerciseCountField;
+    private JSpinner kilogramsField;
+    private JSpinner runningDistanceField;
     String[] columnNames = {
             "Data",
             "Typ",
@@ -53,9 +61,19 @@ public class AppWindow extends JPanel {
             "Opis",
             "Spalone Kalorie"};
     private DefaultTableModel model = new DefaultTableModel();
+    DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+
+    private int ID = 0;
+
 
     public AppWindow() {
         super();
+        createUIComponents();
+        createListeners();
+    }
+
+    private void createListeners(){
 
         //Buttons properties
         ArrayList<JButton> buttons = new ArrayList();
@@ -68,11 +86,12 @@ public class AppWindow extends JPanel {
         //Create listeners
         addButton.addActionListener(e->{
             getListener(buttons,addButton, addPanel);
+            createUIComponents();
+            ID=0;
         });
         listButton.addActionListener(e->{
             getListener(buttons,listButton,listPanel);
             refreshTrainings();
-
         });
         summaryButton.addActionListener(e->{
             getListener(buttons,summaryButton,summaryPanel);
@@ -103,14 +122,98 @@ public class AppWindow extends JPanel {
             }
         });
 
-        model.setColumnIdentifiers(columnNames);
-        trainingsTable.setModel(model);
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 List<IActivity> trainings = getTrainings();
                 Main.resp.Remove(trainings.get(trainingsTable.getSelectedRow()));
+                JOptionPane.showMessageDialog(new JFrame(), "Usunięto trening !", "Sukces",
+                        JOptionPane.INFORMATION_MESSAGE);
                 refreshTrainings();
+            }
+        });
+
+        detailsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getListener(buttons,addButton, addPanel);
+                List<IActivity> trainings = getTrainings();
+
+                if(trainings.get(trainingsTable.getSelectedRow()).getType().equals("Bieganie")){
+                    Running running = (Running) Main.resp.Get(trainings.get(trainingsTable.getSelectedRow()).getId(),
+                            trainings.get(trainingsTable.getSelectedRow()).getClass());
+                    activityType.setSelectedItem("Bieganie");
+                    titleField.setText(running.getTitle());
+                    descriptionField.setText(running.getDescription());
+                    dateField.setText(running.getDate());
+                    cyclingDistanceField.setValue(running.getDistance());
+
+                    Calendar cal = Calendar.getInstance();
+                    SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    try {
+                        cal.setTime(format.parse(running.getTime()));
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
+                    }
+                    SpinnerDateModel SpinnerMinutesModel = new SpinnerDateModel();
+                    SpinnerMinutesModel.setValue(cal.getTime());
+                    runningTimeField.setModel(SpinnerMinutesModel);
+                    JSpinner.DateEditor editor = new JSpinner.DateEditor(runningTimeField, "HH:mm:ss");
+                    runningTimeField.setEditor(editor);
+
+                    pulseField.setValue(running.getPulse());
+                    ID = running.getId();
+
+                }else if(trainings.get(trainingsTable.getSelectedRow()).getType().equals("Rower")){
+                    Cycling cycling = (Cycling) Main.resp.Get(trainings.get(trainingsTable.getSelectedRow()).getId(),
+                            trainings.get(trainingsTable.getSelectedRow()).getClass());
+                    activityType.setSelectedItem("Rower");
+                    titleField.setText(cycling.getTitle());
+                    descriptionField.setText(cycling.getDescription());
+                    dateField.setText(cycling.getDate());
+                    cyclingDistanceField.setValue(cycling.getDistance());
+
+                    Calendar cal = Calendar.getInstance();
+                    SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    try {
+                        cal.setTime(format.parse(cycling.getTime()));
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
+                    }
+                    SpinnerDateModel SpinnerMinutesModel = new SpinnerDateModel();
+                    SpinnerMinutesModel.setValue(cal.getTime());
+                    cyclingTimeField.setModel(SpinnerMinutesModel);
+                    JSpinner.DateEditor editor = new JSpinner.DateEditor(cyclingTimeField, "HH:mm:ss");
+                    cyclingTimeField.setEditor(editor);
+
+                    cadenceField.setValue(cycling.getCadence());
+                    ID = cycling.getId();
+
+                }else if(trainings.get(trainingsTable.getSelectedRow()).getType().equals("Rower")){
+                    Gym gym = (Gym) Main.resp.Get(trainings.get(trainingsTable.getSelectedRow()).getId(),
+                            trainings.get(trainingsTable.getSelectedRow()).getClass());
+                    activityType.setSelectedItem("Rower");
+                    titleField.setText(gym.getTitle());
+                    descriptionField.setText(gym.getDescription());
+                    dateField.setText(gym.getDate());
+                    excerciseCountField.setValue(gym.getCount());
+                    kilogramsField.setValue(gym.getKilograms());
+
+                    Calendar cal = Calendar.getInstance();
+                    SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    try {
+                        cal.setTime(format.parse(gym.getTime()));
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
+                    }
+                    SpinnerDateModel SpinnerMinutesModel = new SpinnerDateModel();
+                    SpinnerMinutesModel.setValue(cal.getTime());
+                    gymTimeField.setModel(SpinnerMinutesModel);
+                    JSpinner.DateEditor editor = new JSpinner.DateEditor(gymTimeField, "HH:mm:ss");
+                    gymTimeField.setEditor(editor);
+                    ID = gym.getId();
+                }
+
             }
         });
     }
@@ -135,7 +238,10 @@ public class AppWindow extends JPanel {
                 running.setTitle(titleField.getText());
                 running.setDescription(descriptionField.getText());
                 running.setDate(dateField.getText());
-                //running.setCalories();
+                running.setDistance((Double) runningDistanceField.getValue());
+                running.setTime(runningTimeField.getValue().toString());
+                running.setPulse((Integer) pulseField.getValue());
+                running.setId(ID);
                 Main.resp.Save(running);
 
             }
@@ -144,7 +250,10 @@ public class AppWindow extends JPanel {
                 cycling.setTitle(titleField.getText());
                 cycling.setDescription(descriptionField.getText());
                 cycling.setDate(dateField.getText());
-                //running.setCalories();
+                cycling.setDistance((Double) cyclingDistanceField.getValue());
+                cycling.setTime(cyclingTimeField.getValue().toString());
+                cycling.setCadence((Integer) cadenceField.getValue());
+                cycling.setId(ID);
                 Main.resp.Save(cycling);
             }
             if(activityType.getSelectedItem().equals("Siłownia")){
@@ -152,11 +261,14 @@ public class AppWindow extends JPanel {
                 gym.setTitle(titleField.getText());
                 gym.setDescription(descriptionField.getText());
                 gym.setDate(dateField.getText());
-                //running.setCalories();
+                gym.setCount((Integer) excerciseCountField.getValue());
+                gym.setKilograms((Integer) kilogramsField.getValue());
+                gym.setTime(gymTimeField.getValue().toString());
+                gym.setId(ID);
                 Main.resp.Save(gym);
             }
 
-            JOptionPane.showMessageDialog(new JFrame(), "Trening został zapisany !", "Sukces",
+            JOptionPane.showMessageDialog(new JFrame(), ID==0?"Trening został zapisany !":"Zaktualizowano trening !", "Sukces",
                     JOptionPane.INFORMATION_MESSAGE);
         }else{
             JOptionPane.showMessageDialog(new JFrame(), "Wypełnij pole tytułu !", "Błąd",
@@ -164,7 +276,41 @@ public class AppWindow extends JPanel {
         }
     }
 
-    private void createUIComponents() { }
+    private void createUIComponents() {
+        //training table
+        model.setColumnIdentifiers(columnNames);
+        trainingsTable.setModel(model);
+
+        //set fields values
+        dateField.setValue(getDate());
+        titleField.setText("");
+        descriptionField.setText("");
+        runningDistanceField.setValue(0.0);
+        cyclingDistanceField.setValue(0.0);
+        pulseField.setValue(0);
+        cadenceField.setValue(0);
+        excerciseCountField.setValue(0);
+        kilogramsField.setValue(0);
+
+        //spinners model
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 24);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+        SpinnerDateModel SpinnerMinutesModel = new SpinnerDateModel();
+        SpinnerMinutesModel.setValue(calendar.getTime());
+        Arrays.asList(runningTimeField, cyclingTimeField, gymTimeField).stream().forEach(e->{
+            e.setModel(SpinnerMinutesModel);
+            JSpinner.DateEditor editor = new JSpinner.DateEditor(e, "HH:mm:ss");
+            e.setEditor(editor);
+        });
+
+        SpinnerNumberModel SpinnerKilometersModel = new SpinnerNumberModel(0.000,0.0,1000.0,0.100);
+        Arrays.asList(runningDistanceField, cyclingDistanceField).stream().forEach(e->{
+            e.setModel(SpinnerKilometersModel);
+        });
+    }
 
     private List<IActivity> getTrainings(){
         List<IActivity> trainigsRunning = Main.resp.getAll(Running.class);
@@ -178,6 +324,19 @@ public class AppWindow extends JPanel {
             trainigs.addAll( trainigsCycling);
         if(trainigsGym != null && !trainigsGym.isEmpty())
             trainigs.addAll(trainigsGym);
+
+        Collections.sort(trainigs, (IActivity o1, IActivity o2) -> {
+            try {
+                Date date1 = format.parse(o1.getDate());
+                Date date2 = format.parse(o2.getDate());
+                return date1.compareTo(date2);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return 0;
+        });
+        Collections.reverse(trainigs);
+
 
         if (trainigs.size()>0){
             return trainigs;
@@ -194,5 +353,10 @@ public class AppWindow extends JPanel {
                 model.addRow(new Object[]{e1.getDate(), e1.getType(), e1.getTitle(), e1.getDescription(), e1.getCalories()});
             });
         }
+    }
+
+    private String getDate() {
+        Date date = new Date();
+        return format.format(date);
     }
 }

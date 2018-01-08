@@ -91,7 +91,6 @@ public class Repository<T extends IActivity> {
         Field[] fields = training.getDeclaredFields();
         Method[] methods = training.getDeclaredMethods();
         Map<String, Object> setters = new HashMap<>();
-       // List setters = new ArrayList();
 
         Arrays.stream(fields).filter(e->e.isAnnotationPresent(DBField.class)).forEach(e->{
             e.setAccessible(true);
@@ -112,7 +111,6 @@ public class Repository<T extends IActivity> {
                 }
                 Arrays.stream(methods).filter(e->e.isAnnotationPresent(DBField.class)).forEach(e->{
                     try {
-                        System.out.println(e.getName().substring(3).toLowerCase());
                         e.invoke(obj,setters.get(e.getName().substring(3).toLowerCase()));
                     } catch (IllegalAccessException|InvocationTargetException e1) {
                         e1.printStackTrace();
@@ -127,13 +125,55 @@ public class Repository<T extends IActivity> {
         return trainigs;
     }
 
+    public IActivity Get(int id, Class<T> training){
+        String className = training.getSimpleName().toLowerCase();
+        String query = "SELECT * FROM " + className + " WHERE id='" + id + "';";
+        List<String> columns = new ArrayList<>();
+        Field[] fields = training.getDeclaredFields();
+        Method[] methods = training.getDeclaredMethods();
+        Map<String, Object> setters = new HashMap<>();
+
+        Arrays.stream(fields).filter(e->e.isAnnotationPresent(DBField.class)).forEach(e->{
+            e.setAccessible(true);
+            columns.add(e.getName());
+        });
+
+        if(!Main.connect.checkExists(className)){
+            return null;
+        }
+        ResultSet result = Main.connect.executeQuery(query);
+
+        try {
+            while (result.next()){
+                T obj = training.newInstance();
+                for (int i=0;i<columns.size();i++){
+                    Object r = result.getObject(columns.get(i));
+                    setters.put(columns.get(i),r);
+                }
+                Arrays.stream(methods).filter(e->e.isAnnotationPresent(DBField.class)).forEach(e->{
+                    try {
+                        e.invoke(obj,setters.get(e.getName().substring(3).toLowerCase()));
+                    } catch (IllegalAccessException|InvocationTargetException e1) {
+                        e1.printStackTrace();
+                    }
+                });
+                return obj;
+            }
+        } catch (SQLException | InstantiationException | IllegalAccessException  e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
     private String getSQLType(String typeName){
         if(typeName.equals("String"))
             return "VARCHAR(255)";
         if(typeName.equals("int"))
             return "INTEGER";
-        if(typeName.equals("float"))
-            return "FLOAT";
+        if(typeName.equals("double"))
+            return "DOUBLE";
 
         return null;
     }

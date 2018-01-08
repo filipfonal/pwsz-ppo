@@ -15,7 +15,7 @@ public class Cycling implements IActivity {
     @DBField
     private int calories;
     @DBField
-    private float distance;
+    private double distance;
     @DBField
     private String time;
     @DBField
@@ -56,7 +56,7 @@ public class Cycling implements IActivity {
 
     //Additional methods for this class
     @DBField
-    public void setDistance(float distance){
+    public void setDistance(double distance){
         this.distance = distance;
     }
     @DBField
@@ -66,7 +66,7 @@ public class Cycling implements IActivity {
         this.cadence = cadence;
     }
 
-    public float getDistance(){
+    public double getDistance(){
         return distance;
     }
     public String getTime(){

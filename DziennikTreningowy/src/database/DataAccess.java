@@ -12,7 +12,7 @@ public class DataAccess {
         try {
             Class.forName("com.mysql.jdbc.Driver");
 
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ppo", "filip", "c94tt9C94gVlCfQl");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:8889/ppo", "filip", "vGUbGAcXSCqYkewc");
             st = con.createStatement();
 
         }catch (Exception e){
