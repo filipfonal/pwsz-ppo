@@ -54,15 +54,17 @@ public class AppWindow extends JPanel {
     private JSpinner excerciseCountField;
     private JSpinner kilogramsField;
     private JSpinner runningDistanceField;
-    String[] columnNames = {
+    private String[] columnNames = {
             "Data",
             "Typ",
             "Nazwa",
             "Opis",
             "Spalone Kalorie"};
     private DefaultTableModel model = new DefaultTableModel();
-    DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-    DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+    private DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    private SpinnerDateModel SpinnerMinutesModel = new SpinnerDateModel();
+    private SpinnerNumberModel SpinnerKilometersModel = new SpinnerNumberModel(0.000,0.0,1000.0,0.100);
+    private Calendar calendar = Calendar.getInstance();
 
     private int ID = 0;
 
@@ -293,12 +295,10 @@ public class AppWindow extends JPanel {
         kilogramsField.setValue(0);
 
         //spinners model
-        Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 24);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
 
-        SpinnerDateModel SpinnerMinutesModel = new SpinnerDateModel();
         SpinnerMinutesModel.setValue(calendar.getTime());
         Arrays.asList(runningTimeField, cyclingTimeField, gymTimeField).stream().forEach(e->{
             e.setModel(SpinnerMinutesModel);
@@ -306,7 +306,6 @@ public class AppWindow extends JPanel {
             e.setEditor(editor);
         });
 
-        SpinnerNumberModel SpinnerKilometersModel = new SpinnerNumberModel(0.000,0.0,1000.0,0.100);
         Arrays.asList(runningDistanceField, cyclingDistanceField).stream().forEach(e->{
             e.setModel(SpinnerKilometersModel);
         });

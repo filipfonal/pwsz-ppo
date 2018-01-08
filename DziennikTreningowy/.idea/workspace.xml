@@ -2,16 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="970acbcb-c795-4683-858b-4f7a2aabf7b4" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DziennikTreningowy/database/DataAccess.class" afterPath="$PROJECT_DIR$/out/production/DziennikTreningowy/database/DataAccess.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DziennikTreningowy/database/Repository.class" afterPath="$PROJECT_DIR$/out/production/DziennikTreningowy/database/Repository.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DziennikTreningowy/view/AppWindow$1.class" afterPath="$PROJECT_DIR$/out/production/DziennikTreningowy/view/AppWindow$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DziennikTreningowy/view/AppWindow.class" afterPath="$PROJECT_DIR$/out/production/DziennikTreningowy/view/AppWindow.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Cycling.java" afterPath="$PROJECT_DIR$/src/components/Cycling.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Running.java" afterPath="$PROJECT_DIR$/src/components/Running.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/database/DataAccess.java" afterPath="$PROJECT_DIR$/src/database/DataAccess.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/database/Repository.java" afterPath="$PROJECT_DIR$/src/database/Repository.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/view/AppWindow.form" afterPath="$PROJECT_DIR$/src/view/AppWindow.form" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/view/AppWindow.java" afterPath="$PROJECT_DIR$/src/view/AppWindow.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -63,10 +53,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Repository.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Repository.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/database/Repository.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="526">
+            <state relative-caret-position="1075">
               <caret line="175" column="26" lean-forward="false" selection-start-line="175" selection-start-column="26" selection-end-line="175" selection-end-column="26" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -102,11 +92,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AppWindow.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AppWindow.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/view/AppWindow.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2046">
-              <caret line="137" column="56" lean-forward="true" selection-start-line="137" selection-start-column="56" selection-end-line="137" selection-end-column="56" />
+            <state relative-caret-position="368">
+              <caret line="155" column="0" lean-forward="false" selection-start-line="155" selection-start-column="0" selection-end-line="155" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -488,7 +478,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287483" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23733863" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23733863" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290735" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32961783" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -838,16 +828,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/view/AppWindow.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2046">
-          <caret line="137" column="56" lean-forward="true" selection-start-line="137" selection-start-column="56" selection-end-line="137" selection-end-column="56" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/view/AppWindow.form">
       <provider selected="true" editor-type-id="ui-designer">
         <state />
@@ -871,8 +851,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/database/Repository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="526">
+        <state relative-caret-position="1075">
           <caret line="175" column="26" lean-forward="false" selection-start-line="175" selection-start-column="26" selection-end-line="175" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/view/AppWindow.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="368">
+          <caret line="155" column="0" lean-forward="false" selection-start-line="155" selection-start-column="0" selection-end-line="155" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
