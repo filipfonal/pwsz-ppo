@@ -19,7 +19,7 @@ public class Cycling implements IActivity {
     @DBField
     private String time;
     @DBField
-    private int cadence;
+    private int speed;
 
     //Interface methods
     @DBField
@@ -62,8 +62,8 @@ public class Cycling implements IActivity {
     @DBField
     public void setTime(String time){ this.time = time; }
     @DBField
-    public void setCadence(int cadence){
-        this.cadence = cadence;
+    public void setSpeed(int speed){
+        this.speed = speed;
     }
 
     public double getDistance(){
@@ -72,7 +72,7 @@ public class Cycling implements IActivity {
     public String getTime(){
         return time;
     }
-    public int getCadence(){
-        return cadence;
+    public int getSpeed(){
+        return speed;
     }
 }

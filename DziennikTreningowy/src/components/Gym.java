@@ -68,7 +68,7 @@ public class Gym implements IActivity {
     public void setTime(String time){
         this.time = time;
     }
-    public float getCount(){
+    public int getCount(){
         return count;
     }
     public int getKilograms(){

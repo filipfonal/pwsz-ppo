@@ -14,8 +14,19 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.ui.RectangleInsets;
 
 public class AppWindow extends JPanel {
     public JPanel mainPanel;
@@ -36,12 +47,8 @@ public class AppWindow extends JPanel {
     private JPanel addPanel;
     private JTextArea descriptionField;
     private JComboBox activityType;
-    private JButton runningButton;
-    private JButton gymButton;
-    private JButton cyclingButton;
     private JPanel cyclingPanel;
     private JPanel gymPanel;
-    private JLabel caloriesField;
     private JTable trainingsTable;
     private JButton deleteButton;
     private JSpinner runningTimeField;
@@ -50,10 +57,14 @@ public class AppWindow extends JPanel {
     private JButton detailsButton;
     private JSpinner pulseField;
     private JSpinner cyclingDistanceField;
-    private JSpinner cadenceField;
+    private JSpinner speedField;
     private JSpinner excerciseCountField;
     private JSpinner kilogramsField;
     private JSpinner runningDistanceField;
+    private JPanel chartPanel;
+    private JProgressBar caloriesProgressBar;
+    private JLabel caloriesSummaryLabel;
+    private JScrollPane summaryScrollPane;
     private String[] columnNames = {
             "Data",
             "Typ",
@@ -67,6 +78,9 @@ public class AppWindow extends JPanel {
     private Calendar calendar = Calendar.getInstance();
 
     private int ID = 0;
+    private int runningCount = 0;
+    private int cyclingCount = 0;
+    private int gymCount = 0;
 
 
     public AppWindow() {
@@ -93,10 +107,11 @@ public class AppWindow extends JPanel {
         });
         listButton.addActionListener(e->{
             getListener(buttons,listButton,listPanel);
-            refreshTrainings();
+            refreshTrainingsList();
         });
         summaryButton.addActionListener(e->{
             getListener(buttons,summaryButton,summaryPanel);
+            createSummary();
         });
         userButton.addActionListener(e->{
             getListener(buttons,userButton,userPanel);
@@ -131,7 +146,7 @@ public class AppWindow extends JPanel {
                 Main.resp.Remove(trainings.get(trainingsTable.getSelectedRow()));
                 JOptionPane.showMessageDialog(new JFrame(), "Usunięto trening !", "Sukces",
                         JOptionPane.INFORMATION_MESSAGE);
-                refreshTrainings();
+                refreshTrainingsList();
             }
         });
 
@@ -188,13 +203,13 @@ public class AppWindow extends JPanel {
                     JSpinner.DateEditor editor = new JSpinner.DateEditor(cyclingTimeField, "HH:mm:ss");
                     cyclingTimeField.setEditor(editor);
 
-                    cadenceField.setValue(cycling.getCadence());
+                    speedField.setValue(cycling.getSpeed());
                     ID = cycling.getId();
 
-                }else if(trainings.get(trainingsTable.getSelectedRow()).getType().equals("Rower")){
+                }else if(trainings.get(trainingsTable.getSelectedRow()).getType().equals("Siłownia")){
                     Gym gym = (Gym) Main.resp.Get(trainings.get(trainingsTable.getSelectedRow()).getId(),
                             trainings.get(trainingsTable.getSelectedRow()).getClass());
-                    activityType.setSelectedItem("Rower");
+                    activityType.setSelectedItem("Siłownia");
                     titleField.setText(gym.getTitle());
                     descriptionField.setText(gym.getDescription());
                     dateField.setText(gym.getDate());
@@ -243,6 +258,7 @@ public class AppWindow extends JPanel {
                 running.setDistance((Double) runningDistanceField.getValue());
                 running.setTime(runningTimeField.getValue().toString());
                 running.setPulse((Integer) pulseField.getValue());
+                running.setCalories(calculateCalories(activityType.getSelectedItem().toString(), runningTimeField.getValue().toString(), ((Double) runningDistanceField.getValue()).intValue()));
                 running.setId(ID);
                 Main.resp.Save(running);
 
@@ -254,7 +270,8 @@ public class AppWindow extends JPanel {
                 cycling.setDate(dateField.getText());
                 cycling.setDistance((Double) cyclingDistanceField.getValue());
                 cycling.setTime(cyclingTimeField.getValue().toString());
-                cycling.setCadence((Integer) cadenceField.getValue());
+                cycling.setSpeed((Integer) speedField.getValue());
+                cycling.setCalories(calculateCalories(activityType.getSelectedItem().toString(), cyclingTimeField.getValue().toString(), (int)speedField.getValue()));
                 cycling.setId(ID);
                 Main.resp.Save(cycling);
             }
@@ -266,6 +283,7 @@ public class AppWindow extends JPanel {
                 gym.setCount((Integer) excerciseCountField.getValue());
                 gym.setKilograms((Integer) kilogramsField.getValue());
                 gym.setTime(gymTimeField.getValue().toString());
+                gym.setCalories(calculateCalories(activityType.getSelectedItem().toString(), gymTimeField.getValue().toString(), (int)excerciseCountField.getValue()));
                 gym.setId(ID);
                 Main.resp.Save(gym);
             }
@@ -290,7 +308,7 @@ public class AppWindow extends JPanel {
         runningDistanceField.setValue(0.0);
         cyclingDistanceField.setValue(0.0);
         pulseField.setValue(0);
-        cadenceField.setValue(0);
+        speedField.setValue(0);
         excerciseCountField.setValue(0);
         kilogramsField.setValue(0);
 
@@ -344,7 +362,7 @@ public class AppWindow extends JPanel {
         return null;
     }
 
-    private void refreshTrainings(){
+    private void refreshTrainingsList(){
         model.setRowCount(0);
         List<IActivity> actualTrainings = getTrainings();
         if (actualTrainings != null && !actualTrainings.isEmpty()) {
@@ -357,5 +375,60 @@ public class AppWindow extends JPanel {
     private String getDate() {
         Date date = new Date();
         return format.format(date);
+    }
+
+    private void createSummary(){
+        //Chart
+        List<IActivity> actualTrainings = getTrainings();
+        DefaultCategoryDataset dataBar = new DefaultCategoryDataset();
+        runningCount = actualTrainings.stream().filter(e->e.getType().equals("Bieganie")).toArray().length;
+        cyclingCount = actualTrainings.stream().filter(e->e.getType().equals("Rower")).toArray().length;
+        gymCount = actualTrainings.stream().filter(e->e.getType().equals("Siłownia")).toArray().length;
+        dataBar.setValue(runningCount, "Bieganie", "Bieganie");
+        dataBar.setValue(cyclingCount, "Rower", "Rower");
+        dataBar.setValue(gymCount, "Siłownia", "Siłownia");
+
+        JFreeChart chart = ChartFactory.createBarChart("", "","",dataBar, PlotOrientation.VERTICAL,false,true,true);
+        chart.setPadding(new RectangleInsets(50.0,50.0,50.0,50.0));
+        chartPanel.setLayout(new java.awt.BorderLayout());
+        ChartPanel CP = new ChartPanel(chart);
+        chartPanel.removeAll();
+        chartPanel.add(CP);
+
+        //Calories summary
+        AtomicInteger calories = new AtomicInteger(0);
+        actualTrainings.stream().forEach(e-> calories.getAndAdd(e.getCalories()));
+        caloriesSummaryLabel.setText(calories.toString());
+
+        //Calories progress bar
+        AtomicInteger caloriesMonth = new AtomicInteger(0);
+        actualTrainings.stream().filter(e->{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate trainingDate = LocalDate.parse(e.getDate(), formatter);
+            LocalDate actualDate = LocalDate.now();
+            return trainingDate.isAfter(actualDate.minusMonths(1));
+        }).forEach(e->caloriesMonth.getAndAdd(e.getCalories()));
+        int caloriesPercentage = (int) ((caloriesMonth.doubleValue()/6000)*100);
+        caloriesProgressBar.setValue(caloriesPercentage);
+
+    }
+
+    private int calculateCalories(String type, String time, int data){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss z yyyy");
+        LocalDateTime dateTime = LocalDateTime.parse(time, formatter);
+        int minutes = dateTime.getMinute() + dateTime.getHour()*60;
+        int calories = 0;
+        if(type.equals("Bieganie")){
+            calories = data*minutes;
+        }
+        if(type.equals("Rower")){
+            calories = (int) (70*0.0066*minutes*data);
+
+        }
+        if(type.equals("Siłownia")){
+            calories = minutes * (data>9 ? 9:7);
+        }
+
+        return calories;
     }
 }
