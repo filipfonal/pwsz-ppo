@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_dzienniktreningowy" default="compile.module.dzienniktreningowy">
+  <dirname property="module.dzienniktreningowy.basedir" file="${ant.file.module_dzienniktreningowy}"/>
+  
+  <property name="module.jdk.home.dzienniktreningowy" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.dzienniktreningowy" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.dzienniktreningowy" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.dzienniktreningowy" value="-encoding UTF-8 -source 1.8 -target 1.8 ${compiler.args}"/>
+  
+  <property name="dzienniktreningowy.output.dir" value="${module.dzienniktreningowy.basedir}/out/production/DziennikTreningowy"/>
+  <property name="dzienniktreningowy.testoutput.dir" value="${module.dzienniktreningowy.basedir}/out/test/DziennikTreningowy"/>
+  
+  <path id="dzienniktreningowy.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="dzienniktreningowy.module.production.classpath">
+    <path refid="${module.jdk.classpath.dzienniktreningowy}"/>
+    <path refid="library.mysql-connector-java-5.1.45-bin.classpath"/>
+    <path refid="library.mysql-connector-java-5.1.45-bin1.classpath"/>
+    <path refid="library.jcommon-1.0.23.classpath"/>
+    <path refid="library.jfreechart-1.0.19.classpath"/>
+    <path refid="library.json-simple-1.1.1.classpath"/>
+  </path>
+  
+  <path id="dzienniktreningowy.runtime.production.module.classpath">
+    <pathelement location="${dzienniktreningowy.output.dir}"/>
+    <path refid="library.mysql-connector-java-5.1.45-bin.classpath"/>
+    <path refid="library.mysql-connector-java-5.1.45-bin1.classpath"/>
+    <path refid="library.jcommon-1.0.23.classpath"/>
+    <path refid="library.jfreechart-1.0.19.classpath"/>
+    <path refid="library.json-simple-1.1.1.classpath"/>
+  </path>
+  
+  <path id="dzienniktreningowy.module.classpath">
+    <path refid="${module.jdk.classpath.dzienniktreningowy}"/>
+    <pathelement location="${dzienniktreningowy.output.dir}"/>
+    <path refid="library.mysql-connector-java-5.1.45-bin.classpath"/>
+    <path refid="library.mysql-connector-java-5.1.45-bin1.classpath"/>
+    <path refid="library.jcommon-1.0.23.classpath"/>
+    <path refid="library.jfreechart-1.0.19.classpath"/>
+    <path refid="library.json-simple-1.1.1.classpath"/>
+  </path>
+  
+  <path id="dzienniktreningowy.runtime.module.classpath">
+    <pathelement location="${dzienniktreningowy.testoutput.dir}"/>
+    <pathelement location="${dzienniktreningowy.output.dir}"/>
+    <path refid="library.mysql-connector-java-5.1.45-bin.classpath"/>
+    <path refid="library.mysql-connector-java-5.1.45-bin1.classpath"/>
+    <path refid="library.jcommon-1.0.23.classpath"/>
+    <path refid="library.jfreechart-1.0.19.classpath"/>
+    <path refid="library.json-simple-1.1.1.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.dzienniktreningowy">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.dzienniktreningowy">
+    <patternset refid="excluded.from.module.dzienniktreningowy"/>
+  </patternset>
+  
+  <path id="dzienniktreningowy.module.sourcepath">
+    <dirset dir="${module.dzienniktreningowy.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.dzienniktreningowy" depends="compile.module.dzienniktreningowy.production,compile.module.dzienniktreningowy.tests" description="Compile module DziennikTreningowy"/>
+  
+  <target name="compile.module.dzienniktreningowy.production" depends="register.custom.compilers" description="Compile module DziennikTreningowy; production classes">
+    <mkdir dir="${dzienniktreningowy.output.dir}"/>
+    <javac2 destdir="${dzienniktreningowy.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.dzienniktreningowy}/javac">
+      <compilerarg line="${compiler.args.dzienniktreningowy}"/>
+      <bootclasspath refid="dzienniktreningowy.module.bootclasspath"/>
+      <classpath refid="dzienniktreningowy.module.production.classpath"/>
+      <src refid="dzienniktreningowy.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.dzienniktreningowy"/>
+    </javac2>
+    
+    <copy todir="${dzienniktreningowy.output.dir}">
+      <fileset dir="${module.dzienniktreningowy.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.dzienniktreningowy.tests" depends="register.custom.compilers,compile.module.dzienniktreningowy.production" description="compile module DziennikTreningowy; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.dzienniktreningowy" description="cleanup module">
+    <delete dir="${dzienniktreningowy.output.dir}"/>
+    <delete dir="${dzienniktreningowy.testoutput.dir}"/>
+  </target>
+</project>
