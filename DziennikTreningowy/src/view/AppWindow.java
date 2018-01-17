@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -24,6 +25,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RectangleInsets;
+import org.omg.PortableInterceptor.LOCATION_FORWARD;
 
 public class AppWindow extends JPanel {
     public JPanel mainPanel;
@@ -67,6 +69,8 @@ public class AppWindow extends JPanel {
     private JSpinner userMonthField;
     private JSpinner userCountField;
     private JButton saveUserButton;
+    private JLabel trainingsCountLabel;
+    private JLabel actualMonthLabel;
     private JScrollPane summaryScrollPane;
     private String[] columnNames = {
             "Data",
@@ -427,12 +431,29 @@ public class AppWindow extends JPanel {
     private void createSummary(){
         LocalDate actualDate = LocalDate.now();
 
+        //Month label
+        actualMonthLabel.setText(actualDate.getMonth().getDisplayName(TextStyle.FULL,Locale.ENGLISH));
+
         //Chart
         List<IActivity> actualTrainings = getTrainings();
         DefaultCategoryDataset dataBar = new DefaultCategoryDataset();
-        runningCount = actualTrainings.stream().filter(e->e.getType().equals("Bieganie")).toArray().length;
-        cyclingCount = actualTrainings.stream().filter(e->e.getType().equals("Rower")).toArray().length;
-        gymCount = actualTrainings.stream().filter(e->e.getType().equals("Siłownia")).toArray().length;
+
+        runningCount = actualTrainings.stream().filter(e->e.getType().equals("Bieganie")).filter(e->{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate trainingDate = LocalDate.parse(e.getDate(), formatter);
+            return trainingDate.getMonth().equals(actualDate.getMonth());
+        }).toArray().length;
+        cyclingCount = actualTrainings.stream().filter(e->e.getType().equals("Rower")).filter(e->{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate trainingDate = LocalDate.parse(e.getDate(), formatter);
+            return trainingDate.getMonth().equals(actualDate.getMonth());
+        }).toArray().length;
+        gymCount = actualTrainings.stream().filter(e->e.getType().equals("Siłownia")).filter(e->{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate trainingDate = LocalDate.parse(e.getDate(), formatter);
+            return trainingDate.getMonth().equals(actualDate.getMonth());
+        }).toArray().length;
+
         dataBar.setValue(runningCount, "Bieganie", "Bieganie");
         dataBar.setValue(cyclingCount, "Rower", "Rower");
         dataBar.setValue(gymCount, "Siłownia", "Siłownia");
@@ -446,22 +467,22 @@ public class AppWindow extends JPanel {
 
         //Calories summary
         AtomicInteger calories = new AtomicInteger(0);
-        actualTrainings.stream().filter(e->{
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate trainingDate = LocalDate.parse(e.getDate(), formatter);
-            return trainingDate.getMonth().equals(actualDate.getMonth());
-        }).forEach(e-> calories.getAndAdd(e.getCalories()));
-        caloriesSummaryLabel.setText(calories.toString());
+        AtomicInteger trainingsCount = new AtomicInteger(0);
 
-        //Calories per day
-        AtomicInteger caloriesPerDay = new AtomicInteger(0);
         actualTrainings.stream().filter(e->{
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate trainingDate = LocalDate.parse(e.getDate(), formatter);
             return trainingDate.getMonth().equals(actualDate.getMonth());
-        }).forEach(e-> caloriesPerDay.getAndAdd(e.getCalories()));
-        double perDay = caloriesPerDay.intValue()/actualDate.getDayOfMonth();
-        caloriesPerDayLabel.setText(String.valueOf((int)perDay));
+        }).forEach(e-> {
+            calories.getAndAdd(e.getCalories());
+            trainingsCount.incrementAndGet();
+        });
+
+        double perTraining = calories.intValue()/trainingsCount.intValue();
+
+        trainingsCountLabel.setText(trainingsCount.toString());
+        caloriesSummaryLabel.setText(calories.toString());
+        caloriesPerDayLabel.setText(String.valueOf((int)perTraining));
 
         //Calories progress bar
         AtomicInteger caloriesMonth = new AtomicInteger(0);

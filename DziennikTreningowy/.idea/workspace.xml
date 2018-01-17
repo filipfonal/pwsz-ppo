@@ -7,15 +7,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="970acbcb-c795-4683-858b-4f7a2aabf7b4" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/json_simple_1_1_1.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/artifacts/unnamed.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DziennikTreningowy/components/User.class" afterPath="$PROJECT_DIR$/out/production/DziennikTreningowy/components/User.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DziennikTreningowy/view/AppWindow$1.class" afterPath="$PROJECT_DIR$/out/production/DziennikTreningowy/view/AppWindow$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DziennikTreningowy/view/AppWindow$2.class" afterPath="$PROJECT_DIR$/out/production/DziennikTreningowy/view/AppWindow$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DziennikTreningowy/view/AppWindow$3.class" afterPath="$PROJECT_DIR$/out/production/DziennikTreningowy/view/AppWindow$3.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DziennikTreningowy/view/AppWindow.class" afterPath="$PROJECT_DIR$/out/production/DziennikTreningowy/view/AppWindow.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DziennikTreningowy.iml" afterPath="$PROJECT_DIR$/DziennikTreningowy.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/User.java" afterPath="$PROJECT_DIR$/src/components/User.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/view/AppWindow.form" afterPath="$PROJECT_DIR$/src/view/AppWindow.form" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/view/AppWindow.java" afterPath="$PROJECT_DIR$/src/view/AppWindow.java" />
     </list>
@@ -90,11 +86,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AppWindow.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AppWindow.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/view/AppWindow.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="333" column="36" lean-forward="false" selection-start-line="333" selection-start-column="36" selection-end-line="333" selection-end-column="36" />
+            <state relative-caret-position="447">
+              <caret line="487" column="0" lean-forward="false" selection-start-line="487" selection-start-column="0" selection-end-line="487" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -102,7 +98,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AppWindow.form" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AppWindow.form" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/view/AppWindow.form">
           <provider selected="true" editor-type-id="ui-designer">
             <state />
@@ -112,7 +108,7 @@
       <file leaf-file-name="User.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/User.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1020">
+            <state relative-caret-position="760">
               <caret line="78" column="21" lean-forward="false" selection-start-line="78" selection-start-column="21" selection-end-line="78" selection-end-column="21" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -183,9 +179,9 @@
         <option value="$PROJECT_DIR$/src/components/Running.java" />
         <option value="$PROJECT_DIR$/src/components/Cycling.java" />
         <option value="$PROJECT_DIR$/src/components/Gym.java" />
-        <option value="$PROJECT_DIR$/src/view/AppWindow.form" />
         <option value="$PROJECT_DIR$/src/components/User.java" />
         <option value="$PROJECT_DIR$/src/view/AppWindow.java" />
+        <option value="$PROJECT_DIR$/src/view/AppWindow.form" />
       </list>
     </option>
   </component>
@@ -210,6 +206,7 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -265,9 +262,8 @@
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
       <pane id="Scope" />
-      <pane id="Scratches" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -511,7 +507,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32961783" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1485623" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.09744409" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -562,19 +558,9 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="26" />
+      <option name="time" value="27" />
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="Application">
-        <watch expression="date.isAfter(date.minusMonths(1))" />
-        <watch expression="(String) jsonObject.get(&quot;name&quot;);" />
-        <watch expression="jsonObject.get(&quot;weight&quot;)" language="JAVA" />
-        <watch expression="jsonObject.get(&quot;weight&quot;).hashCode();" />
-        <watch expression="jsonObject.get(&quot;trainings&quot;).hashCode()" language="JAVA" />
-        <watch expression="(int) ((caloriesMonth.doubleValue()/0)*100)" language="JAVA" />
-        <watch expression="(int) ((caloriesMonth.doubleValue()/(userCalories*userTrainings))*100)" language="JAVA" />
-      </configuration>
-    </watches-manager>
+    <watches-manager />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/view/AppWindow.java">
@@ -872,14 +858,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/view/AppWindow.form">
-      <provider selected="true" editor-type-id="ui-designer">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/User.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1020">
+        <state relative-caret-position="760">
           <caret line="78" column="21" lean-forward="false" selection-start-line="78" selection-start-column="21" selection-end-line="78" selection-end-column="21" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -889,12 +870,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/view/AppWindow.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="333" column="36" lean-forward="false" selection-start-line="333" selection-start-column="36" selection-end-line="333" selection-end-column="36" />
+        <state relative-caret-position="447">
+          <caret line="487" column="0" lean-forward="false" selection-start-line="487" selection-start-column="0" selection-end-line="487" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/view/AppWindow.form">
+      <provider selected="true" editor-type-id="ui-designer">
+        <state />
       </provider>
     </entry>
   </component>
