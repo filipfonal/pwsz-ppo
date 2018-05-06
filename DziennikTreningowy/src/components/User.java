@@ -13,12 +13,23 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * User class for storing person information
+ */
+
 public class User {
     private String name;
     private int weight;
     private int trainingsPerMonth;
     private int caloriesPerTraining;
 
+    /**
+     * This is constructor to initialize person object
+     * @param name an initial person name
+     * @param weight an initial person weight
+     * @param trainings sets user goal of trainings per month
+     * @param calories sets user goal of calories per training
+     */
     public User(String name, int weight, int trainings, int calories){
         this.name = name;
         this.weight = weight;
@@ -26,6 +37,9 @@ public class User {
         this.caloriesPerTraining = calories;
     }
 
+    /**
+     * To save user data in json file
+     */
     public void Save(){
         JSONObject obj = new JSONObject();
 
@@ -45,6 +59,10 @@ public class User {
 
     }
 
+    /**
+     * To get user object from file
+     * @return User object
+     */
     public static User getUser(){
         JSONParser parser = new JSONParser();
         File file = new File("user.json");
@@ -76,6 +94,9 @@ public class User {
 
     }
 
+    /**
+     * Check if user data file exists
+     */
     public void Check(){
         File file = new File("user.json");
 
@@ -85,6 +106,10 @@ public class User {
         }
     }
 
+    /**
+     * To get user data
+     * @return HashMap object
+     */
     public Map<String, Object> getUserData(){
         Map<String, Object> data = new HashMap<>();
         data.put("name",name);

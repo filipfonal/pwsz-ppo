@@ -27,6 +27,9 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RectangleInsets;
 import org.omg.PortableInterceptor.LOCATION_FORWARD;
 
+/**
+ * AppWindow class contains the user interface and methods for handling elements and displaying information.
+ */
 public class AppWindow extends JPanel {
     public JPanel mainPanel;
     private JButton addButton;

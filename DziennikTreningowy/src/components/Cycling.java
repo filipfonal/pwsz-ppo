@@ -1,5 +1,8 @@
 package components;
 
+/**
+ * Cycling class for create cycling type activity
+ */
 public class Cycling implements IActivity {
 
     @DBField

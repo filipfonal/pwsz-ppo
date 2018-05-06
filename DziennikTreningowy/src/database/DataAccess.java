@@ -3,11 +3,18 @@ package database;
 import javax.swing.*;
 import java.sql.*;
 
+/**
+ * DataAccess class to connect with mysql database
+ */
 public class DataAccess {
     private Connection con;
     private Statement st;
     private ResultSet rs;
 
+    /**
+     * This is constructor to initialize DataAccess object with specific connection settings.
+     * Required data to connect: url, user, password.
+     */
     public DataAccess(){
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -22,6 +29,11 @@ public class DataAccess {
         }
     }
 
+    /**
+     * To execute query String in mysql database.
+     * @param query SQL query command
+     * @return query result returned by database
+     */
     public ResultSet executeQuery(String query){
         try {
             rs = st.executeQuery(query);
@@ -32,6 +44,10 @@ public class DataAccess {
         return null;
     }
 
+    /**
+     * To execute update command String in mysql database.
+     * @param update SQL update command
+     */
     public void executeUpdate(String update){
         try {
             st.executeUpdate(update);
@@ -40,6 +56,11 @@ public class DataAccess {
         }
     }
 
+    /**
+     * To checking if table exist in mysql database.
+     * @param tableName name of table in database
+     * @return True if table exist, False if table not exist
+     */
     public boolean checkExists(String tableName){
         DatabaseMetaData dbm = null;
         try {

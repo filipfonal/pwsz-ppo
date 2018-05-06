@@ -1,5 +1,7 @@
 package components;
-
+/**
+ * Gym class for create gym type activity
+ */
 public class Gym implements IActivity {
 
     @DBField

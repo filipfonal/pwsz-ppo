@@ -1,5 +1,8 @@
 package components;
 
+/**
+ * Running class for create running type activity
+ */
 public class Running implements IActivity {
 
     @DBField

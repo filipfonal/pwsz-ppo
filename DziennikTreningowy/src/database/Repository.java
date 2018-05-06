@@ -12,8 +12,17 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Repository class to operate on IActivity type objects.
+ * @param <T> Type of object they implements IActivity interface
+ */
 public class Repository<T extends IActivity> {
 
+    /**
+     * This method take IActivity object, reads all the fields and values by the reflection mechanism.
+     * At the end build sql query and add or update this object in sql database.
+     * @param activity IActivity object
+     */
     public void Save(T activity){
         //Search fields with annotation DBField and add to array
         //Bulid String with field names and string with field values
@@ -61,6 +70,10 @@ public class Repository<T extends IActivity> {
         Main.connect.executeUpdate(query);
     }
 
+    /**
+     * This method take IActivity object and remove it from sql database.
+     * @param activity - IActivity object
+     */
     public void Remove(T activity){
         //Search id field and get value
         String query;
@@ -83,6 +96,11 @@ public class Repository<T extends IActivity> {
         Main.connect.executeUpdate(query);
     }
 
+    /**
+     * Get all object by given class from database.
+     * @param training specific training class
+     * @return List<IActivity> Array with returned IActivity object from database
+     */
     public List<IActivity> getAll(Class<T> training){
         List<IActivity> trainigs = new ArrayList<>();
         List<String> columns = new ArrayList<>();
@@ -125,6 +143,12 @@ public class Repository<T extends IActivity> {
         return trainigs;
     }
 
+    /**
+     * Get one object by given id and class from database.
+     * @param id training id
+     * @param training training class type
+     * @return IActivity
+     */
     public IActivity Get(int id, Class<T> training){
         String className = training.getSimpleName().toLowerCase();
         String query = "SELECT * FROM " + className + " WHERE id='" + id + "';";
@@ -166,7 +190,11 @@ public class Repository<T extends IActivity> {
         return null;
     }
 
-
+    /**
+     * Convert JAVA types to SQL types.
+     * @param typeName String with JAVA type name
+     * @return String with SQL type name
+     */
     private String getSQLType(String typeName){
         if(typeName.equals("String"))
             return "VARCHAR(255)";
